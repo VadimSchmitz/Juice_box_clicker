@@ -1,11 +1,9 @@
-
-
 let juice = 0;
 
 let juicerPrice = 30;
 let juicerUpgradePrice = 30;
-let juicerRate = 10;
-let juiceUpgradeRate = 20;
+let juicerRate = 30;
+let juiceUpgradeRate = 30;
 
 let mumPrice = 500;
 let mumUpgradePrice = 500;
@@ -18,25 +16,36 @@ let mumOwnded = 0;
 let mumUpgradeOwnded = 0;
 
 let totalRate = 0;
+let clickRate = 1;
 
 function writeJuicerToDom() {
-  document.getElementById("juice-display").innerHTML = juice + " Owned";
+  document.getElementById("juice-display").innerHTML = juice;
   document.getElementById("rate-display").innerHTML = totalRate + " Juice/sec";
-  document.getElementById("juicer-owned").innerHTML = juicerOwned + " Owned";
+  document.getElementById("juicer-owned").innerHTML = juicerOwned + " clicker upgrades owned";
   document.getElementById("juicer-upgrades-owned").innerHTML = juicerUpgradeOwnded + " upgrades owned";
 }
 
 function writeMumToDom() {
-  document.getElementById("juice-display").innerHTML = juice + " Owned";
+  document.getElementById("juice-display").innerHTML = juice;
   document.getElementById("rate-display").innerHTML = totalRate + " Juice/sec";
-  document.getElementById("mum-owned").innerHTML = mumOwnded + " Owned";
+  document.getElementById("mum-owned").innerHTML = mumOwnded + " clicker upgrades owned";
   document.getElementById("mum-upgrades-owned").innerHTML = mumUpgradeOwnded + " upgrades owned";
-
 }
+
+function writeButtonPressToDom() {
+  document.getElementById("juice-display").innerHTML = juice;
+}
+
+
+document.getElementById("btn-main").addEventListener("click", () => {
+  juice += clickRate;
+  writeButtonPressToDom()
+});
+
 
 document.getElementById("btn-buy-juicer").addEventListener("click", () => {
   juice -= juicerPrice;
-  totalRate += juicerRate;
+  clickRate += juicerRate;
   juicerOwned++;
   writeJuicerToDom();
 });
@@ -50,7 +59,7 @@ document.getElementById("btn-upgrade-juicer").addEventListener("click", () => {
 
 document.getElementById("btn-buy-mum").addEventListener("click", () => {
   juice -= mumPrice;
-  totalRate += mumRate;
+  clickRate += mumRate;
   mumOwnded++;
   writeMumToDom();
 });
