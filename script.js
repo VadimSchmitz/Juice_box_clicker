@@ -1,116 +1,63 @@
-$(function() {
-  
-  var juice = 0;
-  var minersOwned = 0;
-  var minersUpgrade = 2;
-  var ticks;
 
-  if (localStorage.getItem('juice') !== null) {
-    juice = parseFloat(localStorage.getItem('juice'));
-    updateDisplay();
-  }
-  if (localStorage.getItem('minersOwned') !== null) {
-    minersOwned = parseInt(localStorage.getItem('minersOwned'));
-    updateDisplay();
-  }
-  if (localStorage.getItem('minersUpgrade') !== null) {
-    minersUpgrade = parseFloat(localStorage.getItem('minersUpgrade'));
-    updateDisplay();
-  }
-  
-  
-  ticks = window.setInterval(function() {
-    var amt = minersOwned * (minersUpgrade);
-    mathJuice("add", amt);
-  }, 1000);
 
-  function updateDisplay() {
-    checkButtonsEnabled();
-    console.log(juice)
-    $("#juice-display").text(juice.toFixed(0));
-    $("#owned-display").text(minersOwned);
-    $("#rate-display").text(minersUpgrade.toFixed(1));
-  }
-  
-  function checkButtonsEnabled(){
-     if (juice < 1) {
-            $("#btn-buy").attr("disabled", "disabled");
-        } else {
-            $("#btn-buy").removeAttr("disabled", "disabled");
-        }    
-     
-     if (juice < 1 || minersOwned < 1) {
-            $("#btn-upgrade").attr("disabled", "disabled");
-        } else {
-            $("#btn-upgrade").removeAttr("disabled", "disabled");
-        }    
-     }
+let juice = 0;
 
-     
-  function mathJuice(operator, amount) {
-    switch (operator) {
-      case "add":
-        juice += amount;
-        localStorage.juice = juice;
-        updateDisplay();
-        break;
-      case "sub":
-        juice -= amount;
-        localStorage.juice = juice;
-        updateDisplay();
-        break;
-      default:
-        alert("mathJuice() not passed correct operator!")
-    }
-  }
+let juicerPrice = 30;
+let juicerUpgradePrice = 30;
+let juicerRate = 10;
+let juiceUpgradeRate = 20;
 
-  $("#btn-click").click(function() {
-    mathJuice("add",1);
-    updateDisplay();
-  });
-  $("#btn-clear").click(function() {
-      juice = 0;
-      localStorage.juice = 0;
-      minersOwned = 0;
-      localStorage.minersOwned = 0;  
-      minersUpgrade = 0;
-      localStorage.minersUpgrade = 1;
-      updateDisplay();
-  });  
-  $("#btn-buy").click(function() {
-    if (juice >= 30) {
-      mathJuice("sub", 30)
-      minersOwned += 1;
-      localStorage.minersOwned = minersOwned;
-      updateDisplay();
-    }
-  });
-  $("#btn-upgrade").click(function() {
-    if (juice >= 30) {
-      mathJuice("sub", 30)
-      minersUpgrade += 0.2;
-      localStorage.minersUpgrade = minersUpgrade;
-      updateDisplay();
-    }
-  });
-  
+let mumPrice = 500;
+let mumUpgradePrice = 500;
+let mumRate = 500;
+let mumUpgradeRate = 500;
 
-  function storageAvailable(type) {
-    try {
-      var storage = window[type],
-        x = '__storage_test__';
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
+let juicerOwned = 0;
+let juicerUpgradeOwnded = 0;
+let mumOwnded = 0;
+let mumUpgradeOwnded = 0;
 
-  if (storageAvailable('localStorage')) {
-    console.log("local storage available!");
-  } else {
-    console.log("local storage not available!");
-  }
+let totalRate = 0;
 
+function writeJuicerToDom() {
+  document.getElementById("juice-display").innerHTML = juice + " Owned";
+  document.getElementById("rate-display").innerHTML = totalRate + " Juice/sec";
+  document.getElementById("juicer-owned").innerHTML = juicerOwned + " Owned";
+  document.getElementById("juicer-upgrades-owned").innerHTML = juicerUpgradeOwnded + " upgrades owned";
+}
+
+function writeMumToDom() {
+  document.getElementById("juice-display").innerHTML = juice + " Owned";
+  document.getElementById("rate-display").innerHTML = totalRate + " Juice/sec";
+  document.getElementById("mum-owned").innerHTML = mumOwnded + " Owned";
+  document.getElementById("mum-upgrades-owned").innerHTML = mumUpgradeOwnded + " upgrades owned";
+
+}
+
+document.getElementById("btn-buy-juicer").addEventListener("click", () => {
+  juice -= juicerPrice;
+  totalRate += juicerRate;
+  juicerOwned++;
+  writeJuicerToDom();
+});
+
+document.getElementById("btn-upgrade-juicer").addEventListener("click", () => {
+  juice -= juicerUpgradePrice;
+  totalRate += juiceUpgradeRate;
+  juicerUpgradeOwnded++;
+  writeJuicerToDom();
+});
+
+document.getElementById("btn-buy-mum").addEventListener("click", () => {
+  juice -= mumPrice;
+  totalRate += mumRate;
+  mumOwnded++;
+  writeMumToDom();
+});
+
+document.getElementById("btn-upgrade-mum").addEventListener("click", () => {
+  juice -= mumUpgradePrice;
+  totalRate += mumUpgradeRate;
+  mumUpgradeOwnded++;
+  writeMumToDom();
 });
