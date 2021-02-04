@@ -18,6 +18,18 @@ let mumUpgradeOwnded = 0;
 let totalRate = 0;
 let clickRate = 1;
 
+
+for (let i = 1; i < 10; i++) {
+  setTimeout(function timer() {
+    juice += totalRate;
+    UpdateJuice();
+  }, i * 3000);
+}
+
+function UpdateJuice() {
+  document.getElementById("juice-display").innerHTML = juice;
+}
+
 function writeJuicerToDom() {
   document.getElementById("juice-display").innerHTML = juice;
   document.getElementById("rate-display").innerHTML = totalRate + " Juice/sec";
@@ -32,41 +44,43 @@ function writeMumToDom() {
   document.getElementById("mum-upgrades-owned").innerHTML = mumUpgradeOwnded + " upgrades owned";
 }
 
-function writeButtonPressToDom() {
-  document.getElementById("juice-display").innerHTML = juice;
-}
-
-
 document.getElementById("btn-main").addEventListener("click", () => {
   juice += clickRate;
-  writeButtonPressToDom()
+  UpdateJuice()
 });
 
-
 document.getElementById("btn-buy-juicer").addEventListener("click", () => {
-  juice -= juicerPrice;
-  clickRate += juicerRate;
-  juicerOwned++;
-  writeJuicerToDom();
+  if (juice > juicerPrice) {
+    juice -= juicerPrice;
+    clickRate += juicerRate;
+    juicerOwned++;
+    writeJuicerToDom();
+  }
 });
 
 document.getElementById("btn-upgrade-juicer").addEventListener("click", () => {
-  juice -= juicerUpgradePrice;
-  totalRate += juiceUpgradeRate;
-  juicerUpgradeOwnded++;
-  writeJuicerToDom();
+  if (juice > juicerPrice) {
+    juice -= juicerUpgradePrice;
+    totalRate += juiceUpgradeRate;
+    juicerUpgradeOwnded++;
+    writeJuicerToDom();
+  }
 });
 
 document.getElementById("btn-buy-mum").addEventListener("click", () => {
-  juice -= mumPrice;
-  clickRate += mumRate;
-  mumOwnded++;
-  writeMumToDom();
+  if (juice > mumPrice) {
+    juice -= mumPrice;
+    clickRate += mumRate;
+    mumOwnded++;
+    writeMumToDom();
+  }
 });
 
 document.getElementById("btn-upgrade-mum").addEventListener("click", () => {
-  juice -= mumUpgradePrice;
-  totalRate += mumUpgradeRate;
-  mumUpgradeOwnded++;
-  writeMumToDom();
+  if (juice > mumUpgradePrice) {
+    juice -= mumUpgradePrice;
+    totalRate += mumUpgradeRate;
+    mumUpgradeOwnded++;
+    writeMumToDom();
+  }
 });
