@@ -18,13 +18,31 @@ let mumUpgradeOwnded = 0;
 let totalRate = 0;
 let clickRate = 1;
 
+move()
+function move() {
+  var i = 0;
+  if (i == 0) {
+    i = 0;
+    var elem = document.getElementById("myBar");
+    var width = 1;
+    var id = setInterval(frame, 10);
 
-for (let i = 1; i < 10; i++) {
-  setTimeout(function timer() {
-    juice += totalRate;
-    UpdateJuice();
-  }, i * 3000);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+        i = 0;
+        elem.style.width = 0
+        juice += totalRate;
+        UpdateJuice();
+        move()
+      } else {
+        width++;
+        elem.style.width = width + "%";
+      }
+    }
+  }
 }
+
 
 function UpdateJuice() {
   document.getElementById("juice-display").innerHTML = juice;
@@ -82,5 +100,6 @@ document.getElementById("btn-upgrade-mum").addEventListener("click", () => {
     totalRate += mumUpgradeRate;
     mumUpgradeOwnded++;
     writeMumToDom();
+    initBar()
   }
 });
